@@ -1,0 +1,18 @@
+- file: introduction
+
+- part: Getting Started
+  chapters:
+    - file: configuration
+    - file: tcut_intro.ipynb
+    - file: func_adl_intro.ipynb
+
+- part: Advanced Usage
+  chapters:
+    - file: tcut_advanced.ipynb
+    - file: func_adl_flat.ipynb
+    - file: func_adl_advanced.ipynb
+
+- part: Developer Access
+  chapters:
+    - file: qastle.ipynb
+    - file: generating_qastle.ipynb

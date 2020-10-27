@@ -1,0 +1,9 @@
+# in _config.yml
+title: "Getting Data From ServiceX"
+# logo: images/logo.png
+author: IRIS-HEP
+execute:
+  execute_notebooks: "off"
+
+#repository:
+#  url:
