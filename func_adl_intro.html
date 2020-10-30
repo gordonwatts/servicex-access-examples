@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>func_adl Introduction &#8212; Getting Data From ServiceX</title>
+    <title>func_adl Hello World &#8212; Getting Data From ServiceX</title>
     
   <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
 
@@ -124,7 +124,7 @@
      func_adl
     </span>
    </code>
-   Introduction
+   Hello World
   </a>
  </li>
 </ul>
@@ -288,6 +288,25 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#flat-root-file">
+   Flat ROOT File
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#atlas-xaod-file">
+   ATLAS xAOD File
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -295,15 +314,182 @@
         
               <div>
                 
-  <div class="section" id="func-adl-introduction">
-<h1><code class="docutils literal notranslate"><span class="pre">func_adl</span></code> Introduction<a class="headerlink" href="#func-adl-introduction" title="Permalink to this headline">¶</a></h1>
-<p>This will intro to use of func adl</p>
+  <div class="section" id="func-adl-hello-world">
+<h1><code class="docutils literal notranslate"><span class="pre">func_adl</span></code> Hello World<a class="headerlink" href="#func-adl-hello-world" title="Permalink to this headline">¶</a></h1>
+<p>This will show you the simplests scripts to get data back via <code class="docutils literal notranslate"><span class="pre">func_adl</span></code> from an flat ROOT tuple file and from an ATLAS <code class="docutils literal notranslate"><span class="pre">xAOD</span></code> file.</p>
+<p>These tutorials assume you have a properly configured <code class="docutils literal notranslate"><span class="pre">.servicex</span></code> file with ServiceX access information.</p>
+<div class="section" id="flat-root-file">
+<h2>Flat ROOT File<a class="headerlink" href="#flat-root-file" title="Permalink to this headline">¶</a></h2>
+<p>To make these examples easy to cut-paste, they are run in a single cell. The text after wards will explain them line-by-line.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">func_adl_servicex</span> <span class="kn">import</span> <span class="n">ServiceXSourceUpROOT</span>
+
+<span class="n">dataset_uproot</span> <span class="o">=</span> <span class="s2">&quot;user.kchoi:user.kchoi.ttHML_80fb_ttbar&quot;</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ServiceXSourceUpROOT</span><span class="p">(</span><span class="n">dataset_uproot</span><span class="p">,</span> <span class="s2">&quot;nominal&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="s2">&quot;lambda e: {&#39;lep_pt_1&#39;: e.lep_Pt_1/1000.0}&quot;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">AsAwkwardArray</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">value</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lep_pt_1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ChunkedArray [29.69721 59.942165 18.633768 ... 22.894817 28.860708 179.20753] at 0x01da8cab98c8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lep_pt_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lepton 1 $p_T$ [GeV]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/func_adl_intro_4_0.png" src="_images/func_adl_intro_4_0.png" />
+</div>
+</div>
+<p>The first cell retreives the data from ServiceX as an Awkward array. The second plots it - and should be mostly familiar.</p>
+<p>Lets go line-by-line the first cell.</p>
+<ol class="simple">
+<li><p>The import <code class="docutils literal notranslate"><span class="pre">ServiceXSourceUpROOT</span></code> is a <code class="docutils literal notranslate"><span class="pre">func_adl</span></code> data source. In this case, it indicates a ServiceX backend that can work with flat ROOT files.</p></li>
+<li><p>Blank line</p></li>
+<li><p>This is the dataset that we will be reading from. This must be a <code class="docutils literal notranslate"><span class="pre">rucio</span></code> dataset identifier (DID). In this case we are working with an ATLAS backend, and this is a flat root file in a user scope.</p></li>
+<li><p>Here the data source is created.</p></li>
+</ol>
+<ul class="simple">
+<li><p>Since this is a flat root file and it may contian many <code class="docutils literal notranslate"><span class="pre">TTree</span></code>’s, we have to give it a tree name. In this case we give it <code class="docutils literal notranslate"><span class="pre">nominal</span></code>.</p></li>
+<li><p>The best way to think of the object <code class="docutils literal notranslate"><span class="pre">ds</span></code> is as a sequence of <code class="docutils literal notranslate"><span class="pre">Event</span></code> objects. Each <code class="docutils literal notranslate"><span class="pre">Event</span></code> object contains all the data for a single event.</p></li>
+</ul>
+<ol class="simple">
+<li><p>This is the first line of the selection.</p></li>
+</ol>
+<ul class="simple">
+<li><p>We start with the data set source, which is a sequence of events.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Select</span></code> is applied to each <code class="docutils literal notranslate"><span class="pre">Event</span></code> in the sequence.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">e</span></code> in the lambda expression represents the data in that event. In this case, all the leaves in the ROOT TTree.</p></li>
+<li><p>The python dictionary specifies the columns we want.</p></li>
+<li><p>‘lep_pt_1’ is what we will call the name of the column below.</p></li>
+<li><p>‘e.lep_Pt_1/1000.0’ is what we will fill the ‘lep_pt_1’ with as it is returned from ServiceX. In this case, the <code class="docutils literal notranslate"><span class="pre">lep_Pt_1</span></code> branch, converted from units of MEV to GeV</p></li>
+</ul>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AsAwkwardArray</span></code> tells the system to return the data as an Awkward array.</p></li>
+</ol>
+<ul class="simple">
+<li><p>Behind your back parquet files will be returned to a local disk cache</p></li>
+<li><p>These files are then loaded into memory as <code class="docutils literal notranslate"><span class="pre">Awkward</span></code> arrays, the four file contactinated.</p></li>
+<li><p>The order of contactination is maintained accross queries, so it is possible to combine two queries.</p></li>
+</ul>
+<ol class="simple">
+<li><p>Up to now, nothing has been done: a list of instructions has been assembled. The <code class="docutils literal notranslate"><span class="pre">.value()</span></code> triggers the system to send the request out to ServiceX and fetch the data back.</p></li>
+</ol>
+<p>The second cell plots. As this is fairly standard python plotting code, there are only a few things to call attention to, and they are both contained in this expression: <code class="docutils literal notranslate"><span class="pre">data['lep_pt_1'].flatten()</span></code>.</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">'lep_pt_1'</span></code> is the same as the name of the column in the dictionary from the first cell, line 5.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">.flatten()</span></code> is because the data may come back as a jagged array, and matplotlib does not know what to do with that data. In this partiuclar case, that does not happen, so the <code class="docutils literal notranslate"><span class="pre">flatten</span></code> is not needed. We’ve left it in as this is a common mistake for people starting out.</p></li>
+</ul>
+<p>A final note, if you try re-runnign the first cell you’ll note it executes much faster than previously. This is because the data has been cached on your machine and the system recognizes that you’ve asked for the same data again.</p>
+</div>
+<div class="section" id="atlas-xaod-file">
+<h2>ATLAS xAOD File<a class="headerlink" href="#atlas-xaod-file" title="Permalink to this headline">¶</a></h2>
+<p>An ATLAS <code class="docutils literal notranslate"><span class="pre">xAOD</span></code> file is a binary format that requires a C++ framework to read. There is a special ServiceX transformer that can read these files.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">func_adl_servicex</span> <span class="kn">import</span> <span class="n">ServiceXSourceXAOD</span>
+
+<span class="n">dataset_xaod</span> <span class="o">=</span> <span class="s2">&quot;mc15_13TeV:mc15_13TeV.361106.PowhegPythia8EvtGen_AZNLOCTEQ6L1_Zee.merge.DAOD_STDM3.e3601_s2576_s2132_r6630_r6264_p2363_tid05630052_00&quot;</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ServiceXSourceXAOD</span><span class="p">(</span><span class="n">dataset_xaod</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ds</span> \
+    <span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="s1">&#39;lambda e: e.Jets(&quot;AntiKt4EMTopoJets&quot;)&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="s1">&#39;lambda jets: jets.Where(lambda j: (j.pt()/1000)&gt;30)&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">Select</span><span class="p">(</span><span class="s1">&#39;lambda good_jets: good_jets.Select(lambda j: j.pt()/1000.0)&#39;</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">AsAwkwardArray</span><span class="p">([</span><span class="s2">&quot;JetPt&quot;</span><span class="p">])</span> \
+    <span class="o">.</span><span class="n">value</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;JetPt&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;ChunkedArray [[36.319765625 34.3319140625] [35.84151171875] [33.7014375] ... [46.931421875 36.22234375] [60.069671875 54.458859375] [47.65314453125 32.738951171875]] at 0x01dad341e8c8&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;JetPt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Jet $p_T$ [GeV]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/func_adl_intro_11_0.png" src="_images/func_adl_intro_11_0.png" />
+</div>
+</div>
+<p>Lets break down the query line-by-line again:</p>
+<ol class="simple">
+<li><p>The import <code class="docutils literal notranslate"><span class="pre">ServiceXSourceXAOD</span></code> is a <code class="docutils literal notranslate"><span class="pre">func_adl</span></code> data source. In this case, it indicates a ServiceX backend that can work with an ATLAS <code class="docutils literal notranslate"><span class="pre">xAOD</span></code> file.</p></li>
+<li><p>Blank line</p></li>
+<li><p>This is the dataset that we will be reading from. This must be a <code class="docutils literal notranslate"><span class="pre">rucio</span></code> dataset identifier (DID). In this case it is an old <span class="math notranslate nohighlight">\(Z-&gt;ee\)</span> Monte Carlo file form a Standard Model derivation.</p></li>
+<li><p>Here the data source is created.</p></li>
+</ol>
+<ul class="simple">
+<li><p>The best way to think of the object <code class="docutils literal notranslate"><span class="pre">ds</span></code> is as a sequence of <code class="docutils literal notranslate"><span class="pre">Event</span></code> objects. Each <code class="docutils literal notranslate"><span class="pre">Event</span></code> object contains all the data for a single event.</p></li>
+</ul>
+<ol class="simple">
+<li><p>This is the first line of the selection. We start with the data set source, which is a sequence of events.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Select</span></code> is applied to each <code class="docutils literal notranslate"><span class="pre">Event</span></code> in the sequence. This selection takes an <code class="docutils literal notranslate"><span class="pre">Event</span></code> object and returns a list of jets.</p></li>
+</ol>
+<ul class="simple">
+<li><p>In ATLAS one has to specify the <code class="docutils literal notranslate"><span class="pre">xAOD</span></code> bank name - which is <code class="docutils literal notranslate"><span class="pre">'AntiKtEMTopoJets'</span></code> in this case.</p></li>
+<li><p>Note that as a result of this <code class="docutils literal notranslate"><span class="pre">Select</span></code> statement we are now dealing with a sequence of arrays of jets. So if the first event has 3 jets, the second 2, and the third 4, then we might have <code class="docutils literal notranslate"><span class="pre">[(j11,</span> <span class="pre">j12,</span> <span class="pre">j13),</span> <span class="pre">(j21,</span> <span class="pre">j22),</span> <span class="pre">(j31,</span> <span class="pre">j32,</span> <span class="pre">j33,</span> <span class="pre">j34)]</span></code>.</p></li>
+</ul>
+<ol class="simple">
+<li><p>We want to include jets that have a <span class="math notranslate nohighlight">\(p_T\)</span> larger than 30 GeV only in the results. So do this, we need to apply the <code class="docutils literal notranslate"><span class="pre">Where</span></code> function on each jet’s <span class="math notranslate nohighlight">\(p_T\)</span>.</p></li>
+</ol>
+<ul class="simple">
+<li><p>The first Select means we are dealing at the event level - or the list of jets. So if we are working on the first event, then <code class="docutils literal notranslate"><span class="pre">jets</span></code> represents <code class="docutils literal notranslate"><span class="pre">(j11,</span> <span class="pre">j12,</span> <span class="pre">j13)</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Where</span></code> then filters each jet. In this case by converting the <code class="docutils literal notranslate"><span class="pre">j.pt()</span></code> to GeV and then asking for it to be at least 30.</p></li>
+<li><p>If the jet <span class="math notranslate nohighlight">\(p_T\)</span>’s of the first event are <code class="docutils literal notranslate"><span class="pre">(45,</span> <span class="pre">22,</span> <span class="pre">55)</span></code> GeV, then after the <code class="docutils literal notranslate"><span class="pre">Select</span></code> the first event list of jets will look like <code class="docutils literal notranslate"><span class="pre">(j11,</span> <span class="pre">j13)</span></code>.</p></li>
+</ul>
+<ol class="simple">
+<li><p>We wnat the jet <span class="math notranslate nohighlight">\(p_T\)</span> as our result. Again, we have to operate on each jet, rather than the sequence of jets.</p></li>
+</ol>
+<ul class="simple">
+<li><p>The inner <code class="docutils literal notranslate"><span class="pre">Select</span></code> transforms the jets into <span class="math notranslate nohighlight">\(p_T\)</span>’s.</p></li>
+<li><p>If the first event is as above, then after the event <code class="docutils literal notranslate"><span class="pre">Select</span></code> completes, this will look like <code class="docutils literal notranslate"><span class="pre">(45,</span> <span class="pre">55)</span></code>.</p></li>
+</ul>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">AsAwkwardArray</span></code> tells the system to return the data as an Awkward array.</p></li>
+</ol>
+<ul class="simple">
+<li><p>Behind your back ROOT files will be returned to a local disk cache</p></li>
+<li><p>These files are then loaded into memory as <code class="docutils literal notranslate"><span class="pre">Awkward</span></code> arrays, the four file contactinated.</p></li>
+<li><p>The order of contactination is maintained accross queries, so it is possible to combine two queries.</p></li>
+</ul>
+<ol class="simple">
+<li><p>Up to now, nothing has been done: a list of instructions has been assembled. The <code class="docutils literal notranslate"><span class="pre">.value()</span></code> triggers the system to send the request out to ServiceX and fetch the data back.</p></li>
+</ol>
+<p>The query here is very similar to the one in the ROOT section. A key difference here is that we are keeping the event strucutre. Rather than a list of leptons, we have a list of events, and inside we have the jets. You can see this in the <code class="docutils literal notranslate"><span class="pre">data['JetPt']</span></code>. This makes the query a level more complex. If you want to flatten the output during generation from ServiceX, that isn’t very hard. See the advanced section and the use of the <code class="docutils literal notranslate"><span class="pre">SelectMany</span></code> method.</p>
+<p>A final note, if you try re-runnign the first cell you’ll note it executes much faster than previously. This is because the data has been cached on your machine and the system recognizes that you’ve asked for the same data again.</p>
 </div>
 </div>
 
