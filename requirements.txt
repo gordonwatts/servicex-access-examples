@@ -1,2 +1,9 @@
+#To build the book
 jupyter-book
+
+# Getting jupyter working
 jupyterlab
+
+# To run the examles
+servicex_clients
+matplotlib
