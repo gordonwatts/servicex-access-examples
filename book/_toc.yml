@@ -10,7 +10,7 @@
   chapters:
     - file: tcut_advanced.ipynb
     - file: func_adl_flat.ipynb
-    - file: func_adl_advanced.ipynb
+    - file: func_adl_xaod.ipynb
 
 - part: Developer Access
   chapters:
