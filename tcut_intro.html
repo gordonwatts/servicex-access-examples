@@ -25,8 +25,8 @@
     href="_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
-    <link rel="stylesheet" href="_static/sphinx-book-theme.2d2078699c18a0efb88233928e1cf6ed.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.2d2078699c18a0efb88233928e1cf6ed.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -161,13 +161,13 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="func_adl_advanced.html">
+  <a class="reference internal" href="func_adl_xaod.html">
    <code class="docutils literal notranslate">
     <span class="pre">
      func_adl
     </span>
    </code>
-   advanced usage
+   advanced xAOD Usage
   </a>
  </li>
 </ul>
@@ -288,6 +288,39 @@
     <!-- Table of contents -->
     <div class="d-none d-md-block col-md-2 bd-toc show">
         
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-tcut-with-the-uproot-backend">
+   Using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     TCut
+    </span>
+   </code>
+   with the
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     uproot
+    </span>
+   </code>
+   backend.
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#line-by-line-explination-of-the-query">
+     Line-by-line explination of the query
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+        </nav>
+        
     </div>
 </div>
     <div id="main-content" class="row">
@@ -297,7 +330,40 @@
                 
   <div class="section" id="tcut-introduction">
 <h1><code class="docutils literal notranslate"><span class="pre">TCut</span></code> Introduction<a class="headerlink" href="#tcut-introduction" title="Permalink to this headline">¶</a></h1>
-<p>This will give you a hello world for tcut</p>
+<p>TCut allows for simple selection cuts and lists of columns.</p>
+<div class="section" id="using-tcut-with-the-uproot-backend">
+<h2>Using <code class="docutils literal notranslate"><span class="pre">TCut</span></code> with the <code class="docutils literal notranslate"><span class="pre">uproot</span></code> backend.<a class="headerlink" href="#using-tcut-with-the-uproot-backend" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">servicex</span> <span class="kn">import</span> <span class="n">ServiceXDataset</span>
+<span class="kn">import</span> <span class="nn">tcut_to_qastle</span>
+
+<span class="n">dataset_uproot</span> <span class="o">=</span> <span class="s2">&quot;user.kchoi:user.kchoi.ttHML_80fb_ttbar&quot;</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="n">tcut_to_qastle</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;nominal&#39;</span><span class="p">,</span><span class="s1">&#39;lep_Pt_1&#39;</span><span class="p">,</span><span class="s1">&#39;lep_Pt_1&gt;1000&#39;</span><span class="p">)</span>
+<span class="n">sx_dataset</span> <span class="o">=</span> <span class="n">ServiceXDataset</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset_uproot</span><span class="p">,</span> <span class="n">backend_type</span><span class="o">=</span><span class="s1">&#39;uproot&#39;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">sx_dataset</span><span class="o">.</span><span class="n">get_data_awkward</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;lep_Pt_1&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Lepton 1 $p_T$ [GeV]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/tcut_intro_2_0.png" src="_images/tcut_intro_2_0.png" />
+</div>
+</div>
+<div class="section" id="line-by-line-explination-of-the-query">
+<h3>Line-by-line explination of the query<a class="headerlink" href="#line-by-line-explination-of-the-query" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">

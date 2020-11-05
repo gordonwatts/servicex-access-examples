@@ -25,8 +25,8 @@
     href="_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
-    <link rel="stylesheet" href="_static/sphinx-book-theme.2d2078699c18a0efb88233928e1cf6ed.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.2d2078699c18a0efb88233928e1cf6ed.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -161,13 +161,13 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="func_adl_advanced.html">
+  <a class="reference internal" href="func_adl_xaod.html">
    <code class="docutils literal notranslate">
     <span class="pre">
      func_adl
     </span>
    </code>
-   advanced usage
+   advanced xAOD Usage
   </a>
  </li>
 </ul>
@@ -297,10 +297,22 @@
   <a class="reference internal nav-link" href="#flat-root-file">
    Flat ROOT File
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lets-go-line-by-line">
+     Lets go line-by-line
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#atlas-xaod-file">
    ATLAS xAOD File
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lets-break-down-the-query-line-by-line">
+   Lets break down the query line-by-line
   </a>
  </li>
 </ul>
@@ -360,7 +372,8 @@
 </div>
 </div>
 <p>The first cell retreives the data from ServiceX as an Awkward array. The second plots it - and should be mostly familiar.</p>
-<p>Lets go line-by-line the first cell.</p>
+<div class="section" id="lets-go-line-by-line">
+<h3>Lets go line-by-line<a class="headerlink" href="#lets-go-line-by-line" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
 <li><p>The import <code class="docutils literal notranslate"><span class="pre">ServiceXSourceUpROOT</span></code> is a <code class="docutils literal notranslate"><span class="pre">func_adl</span></code> data source. In this case, it indicates a ServiceX backend that can work with flat ROOT files.</p></li>
 <li><p>Blank line</p></li>
@@ -399,6 +412,7 @@
 <li><p>The <code class="docutils literal notranslate"><span class="pre">.flatten()</span></code> is because the data may come back as a jagged array, and matplotlib does not know what to do with that data. In this partiuclar case, that does not happen, so the <code class="docutils literal notranslate"><span class="pre">flatten</span></code> is not needed. We’ve left it in as this is a common mistake for people starting out.</p></li>
 </ul>
 <p>A final note, if you try re-runnign the first cell you’ll note it executes much faster than previously. This is because the data has been cached on your machine and the system recognizes that you’ve asked for the same data again.</p>
+</div>
 </div>
 <div class="section" id="atlas-xaod-file">
 <h2>ATLAS xAOD File<a class="headerlink" href="#atlas-xaod-file" title="Permalink to this headline">¶</a></h2>
@@ -444,7 +458,9 @@
 <img alt="_images/func_adl_intro_11_0.png" src="_images/func_adl_intro_11_0.png" />
 </div>
 </div>
-<p>Lets break down the query line-by-line again:</p>
+</div>
+<div class="section" id="lets-break-down-the-query-line-by-line">
+<h2>Lets break down the query line-by-line<a class="headerlink" href="#lets-break-down-the-query-line-by-line" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>The import <code class="docutils literal notranslate"><span class="pre">ServiceXSourceXAOD</span></code> is a <code class="docutils literal notranslate"><span class="pre">func_adl</span></code> data source. In this case, it indicates a ServiceX backend that can work with an ATLAS <code class="docutils literal notranslate"><span class="pre">xAOD</span></code> file.</p></li>
 <li><p>Blank line</p></li>
